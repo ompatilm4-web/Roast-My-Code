@@ -1,4 +1,11 @@
+"""
+Alembic environment config. Pulls DATABASE_URL from app.config.Settings
+(same source of truth as the app itself) instead of duplicating it here.
 
+Usage:
+    alembic revision --autogenerate -m "add roasts table"
+    alembic upgrade head
+"""
 from logging.config import fileConfig
 
 from alembic import context

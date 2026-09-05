@@ -1,3 +1,7 @@
+"""
+Structured logging setup. Import and call setup_logging() once at startup
+(main.py does this via the lifespan handler).
+"""
 import logging
 import sys
 

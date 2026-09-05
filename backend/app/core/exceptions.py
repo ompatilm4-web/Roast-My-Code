@@ -1,7 +1,12 @@
+"""
+App-specific exceptions and their HTTP mappings. Routers/services can raise
+these instead of constructing HTTPException everywhere, which keeps error
+handling consistent and makes intent explicit at the call site.
+"""
 import logging
+
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-
 
 logger = logging.getLogger(__name__)
 

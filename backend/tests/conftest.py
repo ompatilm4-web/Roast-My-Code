@@ -1,3 +1,11 @@
+"""
+Shared pytest fixtures.
+
+- `db_session` gives each test a fresh, isolated SQLite DB (file-based per
+  test run, dropped after).
+- `client` gives a TestClient with the DB dependency overridden to use that
+  session, so tests never touch your real dev/prod database.
+"""
 import os
 
 os.environ.setdefault("GROQ_API_KEY", "test-key-not-real")

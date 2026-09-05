@@ -1,3 +1,11 @@
+"""
+Lightweight security layer:
+- Optional API key auth (off by default — set API_KEY in .env to enable)
+- Rate limiting via slowapi
+
+This is intentionally minimal for an MVP. Swap for real OAuth/JWT before
+this goes fully public with paying users or write access to other systems.
+"""
 from fastapi import Header, HTTPException
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -22,7 +30,7 @@ async def require_api_key(x_api_key: str | None = Header(default=None)) -> None:
     any router you want to lock down:
         router = APIRouter(dependencies=[Depends(require_api_key)])
     """
-    configured_key = getattr(settings, "API_KEY", "")
+    configured_key = settings.API_KEY
     if not configured_key:
         return  # auth disabled — fine for local dev / early hackathon demo
     if x_api_key != configured_key:

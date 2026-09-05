@@ -1,4 +1,15 @@
+"""
+Optional background task queue for LLM calls. Not wired into the routers
+by default (the MVP calls Groq synchronously, which is fine at low volume).
 
+To use this at higher traffic:
+1. `pip install celery redis`
+2. Run Redis (or use the one in docker-compose)
+3. Start a worker:  celery -A app.tasks.celery_app worker --loglevel=info
+4. Replace the synchronous `llm_service.generate_roast(...)` call in a
+   router with `generate_roast_task.delay(...)`, return a task/roast ID
+   immediately, and let the client poll `GET /roast/{id}`.
+"""
 import os
 
 from celery import Celery
