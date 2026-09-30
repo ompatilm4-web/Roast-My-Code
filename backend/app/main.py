@@ -7,7 +7,7 @@ from app.config import get_settings
 from app.database import init_db
 from app.core.logging import setup_logging
 from app.core.exceptions import register_exception_handlers
-from app.routers import github_roast, resume_roast, roast_history
+from app.routers import auth, snippet_roast, github_roast, resume_roast, roast_history
 
 settings = get_settings()
 
@@ -21,8 +21,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title=settings.APP_NAME,
-    description="Sarcastic, LLM-powered code, repo, and resume roasting API — powered by Groq.",
-    version="1.0.0",
+    description="Sarcastic, LLM-powered code, repo, and resume roasting API — powered by Groq and resilient heuristics.",
+    version="2.0.0",
     lifespan=lifespan,
 )
 
@@ -37,6 +37,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Core Routers
+app.include_router(auth.router)
+app.include_router(snippet_roast.router)
 app.include_router(github_roast.router)
 app.include_router(resume_roast.router)
 app.include_router(roast_history.router)
@@ -44,4 +47,10 @@ app.include_router(roast_history.router)
 
 @app.get("/", tags=["Health"])
 def health_check():
-    return {"status": "ok", "service": settings.APP_NAME, "env": settings.ENV}
+    return {
+        "status": "ok",
+        "service": settings.APP_NAME,
+        "env": settings.ENV,
+        "version": "2.0.0",
+        "engine": "Groq Llama 3.1 + Adaptive Heuristics",
+    }

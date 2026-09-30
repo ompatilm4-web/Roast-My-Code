@@ -34,6 +34,14 @@ class Settings(BaseSettings):
     # Leave blank to disable auth entirely (fine for local dev / early demo).
     API_KEY: str = ""
 
+    # --- JWT Authentication ---
+    JWT_SECRET_KEY: str = "supersecret_roastmycode_jwt_key_987654321_flame_guard"
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
+
+    # --- Fallback / Heuristic engine ---
+    ALLOW_FALLBACK_ROASTER: bool = True
+
     # --- Uploads ---
     MAX_RESUME_SIZE_MB: int = 5
 
