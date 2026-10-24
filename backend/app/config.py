@@ -4,7 +4,11 @@ All values are pulled from environment variables / .env so nothing
 sensitive is hardcoded.
 """
 from functools import lru_cache
+from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_BACKEND_DIR = Path(__file__).resolve().parent.parent
+_ENV_PATH = _BACKEND_DIR / ".env"
 
 
 class Settings(BaseSettings):
@@ -21,7 +25,7 @@ class Settings(BaseSettings):
 
     # --- Groq / LLM ---
     GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "llama-3.1-8b-instant"
+    GROQ_MODEL: str = "qwen/qwen3.8-27b"
     GROQ_TEMPERATURE: float = 0.7
     GROQ_MAX_TOKENS: int = 1500
 
@@ -45,9 +49,14 @@ class Settings(BaseSettings):
     # --- Uploads ---
     MAX_RESUME_SIZE_MB: int = 5
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=(str(_ENV_PATH), ".env"),
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
 
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+

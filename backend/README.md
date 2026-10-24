@@ -4,33 +4,35 @@ A blunt, funny, LLM-powered code/repo/resume roasting API. Point it at a public
 GitHub repo or upload a resume PDF and get back a sarcastic roast **plus**
 genuinely actionable feedback, structured as JSON.
 
-Built with **FastAPI + Groq (Llama 3.1 8B Instant)** — free tier, fast inference.
+Built with **FastAPI + Groq LPUs (`qwen/qwen3.8-27b` with multi-model fallback)** — sub-second JSON inference + offline heuristic resilience.
 
 ---
 
 ## Architecture
 
 ```
-Client (Swagger UI / React / curl)
+Client (Next.js / Swagger UI / curl)
         │
-        ▼  HTTP POST
-┌───────────────────────────────────────────┐
-│                FastAPI App                 │
-│                                             │
-│  routers/          services/                │
-│  ├─ github_roast.py   ├─ github_service.py  │
-│  ├─ resume_roast.py   ├─ resume_service.py  │
-│  └─ roast_history.py  ├─ llm_service.py      │
-│                        └─ persistence.py     │
-│  core/  → logging, exceptions, auth          │
-└───────────────────────────────────────────┘
+        ▼  HTTP POST / GET
+┌────────────────────────────────────────────────────────┐
+│                      FastAPI App                       │
+│                                                        │
+│  routers/                   services/                  │
+│  ├─ auth.py                 ├─ llm_service.py          │
+│  ├─ snippet_roast.py        ├─ heuristic_roaster.py    │
+│  ├─ github_roast.py         ├─ github_service.py       │
+│  ├─ resume_roast.py         ├─ resume_service.py       │
+│  └─ roast_history.py        └─ persistence.py          │
+│                                                        │
+│  core/  → security (JWT), logging, exceptions          │
+└────────────────────────────────────────────────────────┘
         │                        │
         ▼                        ▼
-  GitHub REST API          Groq API (JSON mode)
+  GitHub REST API          Groq LPU API (JSON mode)
         │                        │
         └────────┬───────────────┘
                   ▼
-          SQLAlchemy → SQLite (dev) / Postgres (prod)
+          SQLAlchemy 2.0 → SQLite (dev) / Postgres (prod)
 ```
 
 ---
@@ -39,10 +41,17 @@ Client (Swagger UI / React / curl)
 
 | Method | Path | Description |
 |---|---|---|
-| `POST` | `/api/v1/roast/github` | Roast a public GitHub repo. Body: `{"repo": "owner/repo"}` |
-| `POST` | `/api/v1/roast/resume` | Roast a resume. Multipart form: `file` (PDF), optional `github_username` |
+| `POST` | `/api/v1/auth/register` | Register new user account |
+| `POST` | `/api/v1/auth/login` | Authenticate user & get JWT token |
+| `GET` | `/api/v1/auth/me` | Fetch authenticated user profile |
+| `PUT` | `/api/v1/auth/profile` | Update profile and custom Groq API key |
+| `POST` | `/api/v1/roast/snippet` | Roast raw code snippet with chosen persona |
+| `POST` | `/api/v1/roast/github` | Roast a public GitHub repo |
+| `POST` | `/api/v1/roast/resume` | Roast uploaded resume PDF |
+| `GET` | `/api/v1/roast/public` | Paginated public "Hall of Flame" roasts |
+| `GET` | `/api/v1/roast/stats` | Global platform metrics |
 | `GET` | `/api/v1/roast/{roast_id}` | Fetch a saved roast by ID |
-| `GET` | `/api/v1/roast/user/{github_username}` | List all roasts for a user |
+| `GET` | `/api/v1/roast/user/{username}` | List all roasts for a user |
 | `GET` | `/` | Health check |
 
 Interactive docs at `/docs` (Swagger) and `/redoc`.
