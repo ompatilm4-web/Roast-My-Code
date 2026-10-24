@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { FileText, Flame, Loader2, UploadCloud, CheckCircle } from "lucide-react";
+import { FileText, Loader2, Upload, CheckCircle2 } from "lucide-react";
 import { roastResume, ApiError, type RoastResponse } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 
@@ -20,10 +20,10 @@ export default function ResumeUpload({ tone, onResult }: ResumeUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const PHASES = [
-    "Extracting PDF text layers & structure...",
-    "Scanning for buzzwords ('ninja', 'guru', 'synergy')...",
-    "Measuring quantifiable metrics & achievements...",
-    "Drafting Senior Recruiter verdict & rewrite blueprint...",
+    "Extracting PDF text layer...",
+    "Scanning buzzwords & impact metrics...",
+    "Evaluating structure & ATS readability...",
+    "Drafting recruiter critique & rewrite plan...",
   ];
 
   async function handleFile(file: File) {
@@ -62,7 +62,7 @@ export default function ResumeUpload({ tone, onResult }: ResumeUploadProps) {
       refreshUser();
     } catch (err) {
       setError(
-        err instanceof ApiError ? err.message : "Something went wrong while roasting resume."
+        err instanceof ApiError ? err.message : "Something went wrong while auditing resume."
       );
     } finally {
       clearInterval(interval);
@@ -71,7 +71,7 @@ export default function ResumeUpload({ tone, onResult }: ResumeUploadProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl space-y-4">
+    <form onSubmit={handleSubmit} className="w-full max-w-xl space-y-4">
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -85,38 +85,38 @@ export default function ResumeUpload({ tone, onResult }: ResumeUploadProps) {
           if (file) handleFile(file);
         }}
         onClick={() => inputRef.current?.click()}
-        className={`cursor-pointer rounded-2xl border-2 border-dashed p-8 text-center transition ${
+        className={`cursor-pointer rounded-xl border border-dashed p-6 text-center transition ${
           dragOver
-            ? "border-flame-orange bg-flame-orange/10"
+            ? "border-accent bg-accent/5"
             : selectedFile
-            ? "border-cyber-emerald/50 bg-cyber-emerald/5"
-            : "border-border bg-surface hover:border-flame-orange/60"
+            ? "border-emerald-500/50 bg-emerald-500/5"
+            : "border-border bg-surface hover:border-zinc-600"
         }`}
       >
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-raised border border-border text-flame-orange mb-3">
+        <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-surface-raised text-zinc-400 mb-2.5">
           {selectedFile ? (
-            <CheckCircle className="h-7 w-7 text-cyber-emerald" />
+            <CheckCircle2 className="h-5 w-5 text-emerald-400" />
           ) : (
-            <UploadCloud className="h-7 w-7" />
+            <Upload className="h-5 w-5" />
           )}
         </div>
 
         {selectedFile ? (
           <div>
-            <p className="font-bold text-white text-base truncate max-w-sm mx-auto">
+            <p className="font-medium text-zinc-200 text-xs truncate max-w-xs mx-auto">
               {selectedFile.name}
             </p>
-            <p className="mt-1 text-xs text-cyber-emerald font-semibold">
-              {(selectedFile.size / 1024).toFixed(1)} KB — Ready to roast! Click to replace.
+            <p className="mt-0.5 text-[11px] text-emerald-400">
+              {(selectedFile.size / 1024).toFixed(1)} KB • Ready to audit
             </p>
           </div>
         ) : (
           <div>
-            <p className="text-sm font-semibold text-gray-200">
-              Drag & drop your resume PDF here, or click to browse
+            <p className="text-xs font-medium text-zinc-300">
+              Upload resume PDF
             </p>
-            <p className="mt-1 text-xs text-gray-500">
-              PDF only, max 5MB. Evaluates ATS compatibility, impact metrics, and clarity.
+            <p className="mt-0.5 text-[11px] text-zinc-500">
+              Drag and drop or click to browse (max 5MB)
             </p>
           </div>
         )}
@@ -134,14 +134,14 @@ export default function ResumeUpload({ tone, onResult }: ResumeUploadProps) {
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-400">
+        <div className="rounded-lg border border-red-900/50 bg-red-950/20 p-2.5 text-xs text-red-400">
           {error}
         </div>
       )}
 
       {loading && (
-        <div className="flex items-center justify-center gap-2.5 rounded-xl border border-flame-orange/30 bg-flame-orange/5 p-3 text-xs font-mono text-flame-orange">
-          <Loader2 className="h-4 w-4 animate-spin" />
+        <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface p-2.5 text-xs text-zinc-400">
+          <Loader2 className="h-3.5 w-3.5 animate-spin text-accent" />
           <span>{PHASES[phaseIndex]}</span>
         </div>
       )}
@@ -149,18 +149,15 @@ export default function ResumeUpload({ tone, onResult }: ResumeUploadProps) {
       <button
         type="submit"
         disabled={loading || !selectedFile}
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-flame-red via-flame-orange to-flame-gold py-3 text-base font-extrabold text-black shadow-flame-glow-sm transition hover:scale-[1.01] hover:shadow-flame-glow disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-100 py-2 text-xs font-semibold text-zinc-950 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
       >
         {loading ? (
           <>
-            <Loader2 className="h-5 w-5 animate-spin" />
-            <span>Shredding Resume...</span>
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            <span>Auditing Resume...</span>
           </>
         ) : (
-          <>
-            <Flame className="h-5 w-5" />
-            <span>Roast My Resume</span>
-          </>
+          <span>Audit Resume</span>
         )}
       </button>
     </form>

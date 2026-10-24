@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Flame, Loader2, Sparkles, Star } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import GithubIcon from "./GithubIcon";
 import { roastGithubRepo, ApiError, type RoastResponse } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
@@ -12,9 +12,9 @@ interface RepoFormProps {
 }
 
 const POPULAR_REPOS = [
-  "pallets/flask",
   "fastapi/fastapi",
   "shadcn-ui/ui",
+  "pallets/flask",
   "facebook/react",
   "torvalds/linux",
 ];
@@ -27,10 +27,10 @@ export default function RepoForm({ tone, onResult }: RepoFormProps) {
   const [phaseIndex, setPhaseIndex] = useState(0);
 
   const PHASES = [
-    "Connecting to GitHub REST API...",
-    "Traversing file tree & commit patterns...",
-    "Inspecting README & architectural debt...",
-    "Generating brutal verdict & blueprint...",
+    "Connecting to repository...",
+    "Indexing file tree & commit frequency...",
+    "Analyzing README & architecture...",
+    "Drafting blueprint...",
   ];
 
   async function handleSubmit(e: React.FormEvent) {
@@ -58,7 +58,7 @@ export default function RepoForm({ tone, onResult }: RepoFormProps) {
       setError(
         err instanceof ApiError
           ? err.message
-          : "Failed to roast repository. Check the URL and try again."
+          : "Failed to audit repository. Please check the repository name and try again."
       );
     } finally {
       clearInterval(interval);
@@ -67,14 +67,14 @@ export default function RepoForm({ tone, onResult }: RepoFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl space-y-4">
+    <form onSubmit={handleSubmit} className="w-full max-w-xl space-y-4">
       {/* Quick Suggestions */}
       <div>
-        <div className="mb-2 flex items-center justify-between text-xs text-gray-400">
-          <span className="font-semibold uppercase tracking-wider">Popular Repos to Roast:</span>
-          <span>Click to fill</span>
+        <div className="mb-2 flex items-center justify-between text-[11px] text-zinc-400">
+          <span className="font-medium uppercase tracking-wider text-zinc-500">Popular Repositories</span>
+          <span>Click to select</span>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {POPULAR_REPOS.map((sample) => (
             <button
               key={sample}
@@ -83,9 +83,9 @@ export default function RepoForm({ tone, onResult }: RepoFormProps) {
                 setRepo(sample);
                 setError(null);
               }}
-              className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-gray-300 transition hover:border-flame-orange hover:bg-surface-raised hover:text-white"
+              className="flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs text-zinc-400 transition hover:border-zinc-700 hover:text-zinc-200"
             >
-              <GithubIcon className="h-3 w-3 text-flame-orange" />
+              <GithubIcon className="h-3 w-3 text-zinc-500" />
               <span>{sample}</span>
             </button>
           ))}
@@ -94,12 +94,12 @@ export default function RepoForm({ tone, onResult }: RepoFormProps) {
 
       {/* Input row */}
       <div>
-        <label htmlFor="repo" className="mb-1 block text-xs font-semibold text-gray-300">
-          GitHub Repository (owner/repo or full URL)
+        <label htmlFor="repo" className="mb-1.5 block text-xs font-medium text-zinc-300">
+          GitHub Repository
         </label>
         <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-500">
               <GithubIcon className="h-4 w-4" />
             </div>
             <input
@@ -107,41 +107,38 @@ export default function RepoForm({ tone, onResult }: RepoFormProps) {
               type="text"
               value={repo}
               onChange={(e) => setRepo(e.target.value)}
-              placeholder="e.g. octocat/Hello-World or https://github.com/..."
+              placeholder="owner/repo or https://github.com/..."
               disabled={loading}
-              className="w-full rounded-xl border border-border bg-surface pl-10 pr-4 py-2.5 text-sm text-gray-200 placeholder-gray-500 outline-none focus:border-accent"
+              className="w-full rounded-lg border border-border bg-surface pl-9 pr-3 py-2 text-xs text-zinc-100 placeholder-zinc-500 outline-none transition focus:border-zinc-500"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading || !repo.trim()}
-            className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-flame-red to-flame-orange px-6 py-2.5 text-sm font-bold text-black shadow-flame-glow-sm transition hover:scale-105 hover:shadow-flame-glow disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex items-center justify-center gap-2 rounded-lg bg-zinc-100 px-5 py-2 text-xs font-semibold text-zinc-950 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
           >
             {loading ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                <span>Roasting...</span>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                <span>Auditing...</span>
               </>
             ) : (
-              <>
-                <Flame className="h-4 w-4" />
-                <span>Roast Repo</span>
-              </>
+              <span>Audit Repo</span>
             )}
           </button>
         </div>
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-400">
+        <div className="rounded-lg border border-red-900/50 bg-red-950/20 p-2.5 text-xs text-red-400">
           {error}
         </div>
       )}
 
       {loading && (
-        <div className="flex items-center justify-center gap-2.5 rounded-xl border border-flame-orange/30 bg-flame-orange/5 p-3 text-xs font-mono text-flame-orange">
-          <Loader2 className="h-4 w-4 animate-spin" />
+        <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface p-2.5 text-xs text-zinc-400">
+          <Loader2 className="h-3.5 w-3.5 animate-spin text-accent" />
           <span>{PHASES[phaseIndex]}</span>
         </div>
       )}

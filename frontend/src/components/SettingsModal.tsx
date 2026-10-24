@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, Settings, Key, User, GitBranch, Check, Loader2, Sparkles } from "lucide-react";
+import { X, Check, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 export default function SettingsModal() {
@@ -44,48 +44,46 @@ export default function SettingsModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border-glow bg-surface-raised p-6 shadow-2xl sm:p-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+      <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-surface-raised p-6 shadow-modal">
+        {/* Close Button */}
         <button
           onClick={closeSettings}
-          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-surface border border-border text-gray-400 hover:text-white transition"
+          className="absolute top-4 right-4 flex h-7 w-7 items-center justify-center rounded-lg bg-surface border border-border text-zinc-400 hover:text-white transition-colors"
         >
-          <X className="h-4 w-4" />
+          <X className="h-3.5 w-3.5" />
         </button>
 
-        <div className="flex items-center gap-3 mb-6">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyber-cyan/20 text-cyber-cyan border border-cyber-cyan/30">
-            <Settings className="h-5 w-5" />
-          </div>
-          <div>
-            <h3 className="text-xl font-bold text-white">Profile & Preferences</h3>
-            <p className="text-xs text-gray-400">Manage account information and custom Groq API key</p>
-          </div>
+        <div className="mb-5">
+          <h3 className="text-base font-semibold text-white">Profile & Preferences</h3>
+          <p className="mt-1 text-xs text-zinc-400">
+            Configure profile credentials and custom Groq API acceleration keys.
+          </p>
         </div>
 
         {success && (
-          <div className="mb-4 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs text-emerald-400">
-            <Check className="h-4 w-4" />
-            <span>Profile and settings updated successfully!</span>
+          <div className="mb-4 flex items-center gap-2 rounded-lg border border-emerald-900/50 bg-emerald-950/20 p-2.5 text-xs text-emerald-400">
+            <Check className="h-3.5 w-3.5" />
+            <span>Preferences updated successfully.</span>
           </div>
         )}
 
-        <form onSubmit={handleSave} className="space-y-4">
+        <form onSubmit={handleSave} className="space-y-3.5">
           <div>
-            <label className="mb-1 block text-xs font-semibold text-gray-300">
+            <label className="mb-1 block text-xs font-medium text-zinc-300">
               Username
             </label>
             <input
               type="text"
               disabled
               value={user.username}
-              className="w-full rounded-xl border border-border bg-black/40 px-3 py-2 text-sm text-gray-400 cursor-not-allowed"
+              className="w-full rounded-lg border border-border bg-black/40 px-3 py-1.5 text-xs text-zinc-500 cursor-not-allowed"
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div>
-              <label className="mb-1 block text-xs font-semibold text-gray-300">
+              <label className="mb-1 block text-xs font-medium text-zinc-300">
                 Full Name
               </label>
               <input
@@ -93,73 +91,68 @@ export default function SettingsModal() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Alex Rivera"
-                className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-gray-200 outline-none focus:border-accent"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 outline-none transition focus:border-zinc-500"
               />
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-semibold text-gray-300">
-                GitHub Username
+              <label className="mb-1 block text-xs font-medium text-zinc-300">
+                GitHub Handle
               </label>
               <input
                 type="text"
                 value={githubUsername}
                 onChange={(e) => setGithubUsername(e.target.value)}
                 placeholder="octocat"
-                className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-gray-200 outline-none focus:border-accent"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 outline-none transition focus:border-zinc-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="mb-1 block text-xs font-semibold text-gray-300">
+            <label className="mb-1 block text-xs font-medium text-zinc-300">
+              Avatar Image URL
+            </label>
+            <input
+              type="url"
+              value={avatarUrl}
+              onChange={(e) => setAvatarUrl(e.target.value)}
+              placeholder="https://images.unsplash.com/..."
+              className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 outline-none transition focus:border-zinc-500"
+            />
+          </div>
+
+          <div className="pt-1">
+            <label className="mb-1 block text-xs font-medium text-zinc-300">
               Custom Groq API Key (Optional)
             </label>
-            <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                <Key className="h-4 w-4" />
-              </div>
-              <input
-                type="password"
-                value={customApiKey}
-                onChange={(e) => setCustomApiKey(e.target.value)}
-                placeholder={
-                  user.custom_api_key_set
-                    ? "•••••••• (Custom key active. Enter new key to override)"
-                    : "gsk_... (Leave blank to use platform default engine)"
-                }
-                className="w-full rounded-xl border border-border bg-surface pl-10 pr-4 py-2 text-sm text-gray-200 outline-none focus:border-accent"
-              />
-            </div>
-            <p className="mt-1 text-[11px] text-gray-500">
-              Provide your own Groq API key from{" "}
-              <a
-                href="https://console.groq.com/keys"
-                target="_blank"
-                rel="noreferrer"
-                className="text-accent underline"
-              >
-                console.groq.com
-              </a>{" "}
-              for unlimited personal rate limits.
+            <input
+              type="password"
+              value={customApiKey}
+              onChange={(e) => setCustomApiKey(e.target.value)}
+              placeholder="gsk_..."
+              className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 outline-none transition focus:border-zinc-500"
+            />
+            <p className="mt-1 text-[11px] text-zinc-500">
+              By default, free platform quota is used. Provide your own key for dedicated rate limits.
             </p>
           </div>
 
-          <div className="pt-2 flex justify-end gap-2">
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
             <button
               type="button"
               onClick={closeSettings}
-              className="rounded-xl px-4 py-2 text-xs font-semibold text-gray-400 hover:text-white"
+              className="rounded-lg border border-border bg-surface px-3 py-1.5 text-xs font-medium text-zinc-400 transition hover:text-white"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 rounded-xl bg-flame-orange px-5 py-2 text-xs font-bold text-black shadow-flame-glow-sm hover:scale-105 transition disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-4 py-1.5 text-xs font-semibold text-zinc-950 transition hover:bg-white disabled:opacity-40"
             >
               {loading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              <span>Save Settings</span>
+              <span>Save Changes</span>
             </button>
           </div>
         </form>

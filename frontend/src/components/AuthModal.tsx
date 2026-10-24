@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Flame, Lock, User, Mail, Loader2, Sparkles, LogIn } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { ApiError } from "@/lib/api";
 
@@ -40,7 +40,7 @@ export default function AuthModal() {
     try {
       await login(loginIdentifier, loginPassword);
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Invalid login credentials.");
+      setError(err instanceof ApiError ? err.message : "Invalid credentials.");
     } finally {
       setLoading(false);
     }
@@ -74,255 +74,189 @@ export default function AuthModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-border-glow bg-surface-raised p-6 shadow-2xl sm:p-8">
-        {/* Glow */}
-        <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-flame-orange/20 blur-3xl" />
-
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+      <div className="relative w-full max-w-sm rounded-2xl border border-border bg-surface-raised p-6 shadow-modal">
         {/* Close button */}
         <button
           onClick={closeAuthModal}
-          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-surface border border-border text-gray-400 hover:text-white transition"
+          className="absolute top-4 right-4 flex h-7 w-7 items-center justify-center rounded-lg bg-surface border border-border text-zinc-400 hover:text-white transition-colors"
         >
-          <X className="h-4 w-4" />
+          <X className="h-3.5 w-3.5" />
         </button>
 
         {/* Header */}
-        <div className="text-center mb-6">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-flame-orange/20 text-flame-orange border border-flame-orange/30 shadow-flame-glow-sm mb-3">
-            <Flame className="h-6 w-6 animate-flame-flicker" />
-          </div>
-          <h3 className="text-2xl font-black text-white">
-            {authModalTab === "login" ? "Welcome Back" : "Join RoastMyCode"}
+        <div className="mb-5">
+          <h3 className="text-base font-semibold text-white">
+            {authModalTab === "login" ? "Sign In" : "Create Account"}
           </h3>
-          <p className="mt-1 text-xs text-gray-400">
+          <p className="mt-1 text-xs text-zinc-400">
             {authModalTab === "login"
-              ? "Sign in to save roasts, blueprints, and manage your audit history."
-              : "Create a free account to track your code quality progression over time."}
+              ? "Access your saved reviews and custom API settings."
+              : "Save your audit history and sync with GitHub."}
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="mb-6 flex rounded-xl border border-border bg-surface p-1">
+        {/* Tab switch */}
+        <div className="flex rounded-lg border border-border bg-surface p-1 mb-5">
           <button
-            type="button"
             onClick={() => {
               openAuthModal("login");
               setError(null);
             }}
-            className={`flex-1 rounded-lg py-2 text-xs font-bold transition ${
+            className={`flex-1 rounded-md py-1.5 text-xs font-medium transition ${
               authModalTab === "login"
-                ? "bg-flame-orange text-black shadow-flame-glow-sm"
-                : "text-gray-400 hover:text-white"
+                ? "bg-zinc-800 text-white"
+                : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
             Sign In
           </button>
           <button
-            type="button"
             onClick={() => {
               openAuthModal("register");
               setError(null);
             }}
-            className={`flex-1 rounded-lg py-2 text-xs font-bold transition ${
+            className={`flex-1 rounded-md py-1.5 text-xs font-medium transition ${
               authModalTab === "register"
-                ? "bg-flame-orange text-black shadow-flame-glow-sm"
-                : "text-gray-400 hover:text-white"
+                ? "bg-zinc-800 text-white"
+                : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
-            Create Account
+            Register
           </button>
         </div>
 
-        {/* Error box */}
         {error && (
-          <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-400">
+          <div className="mb-4 rounded-lg border border-red-900/50 bg-red-950/20 p-2.5 text-xs text-red-400">
             {error}
           </div>
         )}
 
-        {/* Login Form */}
         {authModalTab === "login" ? (
-          <form onSubmit={handleLoginSubmit} className="space-y-4">
+          <form onSubmit={handleLoginSubmit} className="space-y-3">
             <div>
-              <label className="mb-1 block text-xs font-semibold text-gray-300">
+              <label className="mb-1 block text-xs font-medium text-zinc-300">
                 Username or Email
               </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                  <User className="h-4 w-4" />
-                </div>
-                <input
-                  type="text"
-                  required
-                  value={loginIdentifier}
-                  onChange={(e) => setLoginIdentifier(e.target.value)}
-                  placeholder="demodev or email@domain.com"
-                  disabled={loading}
-                  className="w-full rounded-xl border border-border bg-surface pl-10 pr-4 py-2.5 text-sm text-gray-200 outline-none focus:border-accent"
-                />
-              </div>
+              <input
+                type="text"
+                required
+                value={loginIdentifier}
+                onChange={(e) => setLoginIdentifier(e.target.value)}
+                placeholder="name@example.com"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 outline-none transition focus:border-zinc-500"
+              />
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-semibold text-gray-300">
+              <label className="mb-1 block text-xs font-medium text-zinc-300">
                 Password
               </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                  <Lock className="h-4 w-4" />
-                </div>
-                <input
-                  type="password"
-                  required
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                  placeholder="••••••••"
-                  disabled={loading}
-                  className="w-full rounded-xl border border-border bg-surface pl-10 pr-4 py-2.5 text-sm text-gray-200 outline-none focus:border-accent"
-                />
-              </div>
+              <input
+                type="password"
+                required
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 outline-none transition focus:border-zinc-500"
+              />
             </div>
 
             <button
               type="submit"
-              disabled={loading || !loginIdentifier || !loginPassword}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-flame-red via-flame-orange to-flame-gold py-2.5 text-sm font-extrabold text-black shadow-flame-glow-sm transition hover:scale-[1.01] hover:shadow-flame-glow disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={loading}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-100 py-2 text-xs font-semibold text-zinc-950 transition hover:bg-white disabled:opacity-40"
             >
-              {loading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>Signing In...</span>
-                </>
-              ) : (
-                <>
-                  <LogIn className="h-4 w-4" />
-                  <span>Sign In</span>
-                </>
-              )}
+              {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Sign In"}
             </button>
 
-            {/* Quick Demo Credentials */}
             <div className="pt-2 text-center">
               <button
                 type="button"
                 onClick={fillDemoAccount}
-                className="text-xs text-accent font-semibold hover:underline flex items-center gap-1 mx-auto"
+                className="text-[11px] text-zinc-400 hover:text-zinc-200 underline underline-offset-2"
               >
-                <Sparkles className="h-3.5 w-3.5" />
-                <span>Fill Demo Account (demodev / password123)</span>
+                Use demo account (demodev)
               </button>
             </div>
           </form>
         ) : (
-          /* Register Form */
-          <form onSubmit={handleRegisterSubmit} className="space-y-3.5">
+          <form onSubmit={handleRegisterSubmit} className="space-y-3">
             <div>
-              <label className="mb-1 block text-xs font-semibold text-gray-300">
+              <label className="mb-1 block text-xs font-medium text-zinc-300">
                 Username *
               </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                  <User className="h-4 w-4" />
-                </div>
-                <input
-                  type="text"
-                  required
-                  value={regUsername}
-                  onChange={(e) => setRegUsername(e.target.value)}
-                  placeholder="e.g. dev_ninja"
-                  disabled={loading}
-                  className="w-full rounded-xl border border-border bg-surface pl-10 pr-4 py-2 text-sm text-gray-200 outline-none focus:border-accent"
-                />
-              </div>
+              <input
+                type="text"
+                required
+                value={regUsername}
+                onChange={(e) => setRegUsername(e.target.value)}
+                placeholder="developer"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 outline-none transition focus:border-zinc-500"
+              />
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-semibold text-gray-300">
-                Email Address (Optional)
+              <label className="mb-1 block text-xs font-medium text-zinc-300">
+                Email
               </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                  <Mail className="h-4 w-4" />
-                </div>
-                <input
-                  type="email"
-                  value={regEmail}
-                  onChange={(e) => setRegEmail(e.target.value)}
-                  placeholder="you@domain.com"
-                  disabled={loading}
-                  className="w-full rounded-xl border border-border bg-surface pl-10 pr-4 py-2 text-sm text-gray-200 outline-none focus:border-accent"
-                />
-              </div>
+              <input
+                type="email"
+                value={regEmail}
+                onChange={(e) => setRegEmail(e.target.value)}
+                placeholder="alex@company.com"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 outline-none transition focus:border-zinc-500"
+              />
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-semibold text-gray-300">
-                Password * (min 6 characters)
+              <label className="mb-1 block text-xs font-medium text-zinc-300">
+                Password *
               </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                  <Lock className="h-4 w-4" />
-                </div>
-                <input
-                  type="password"
-                  required
-                  minLength={6}
-                  value={regPassword}
-                  onChange={(e) => setRegPassword(e.target.value)}
-                  placeholder="••••••••"
-                  disabled={loading}
-                  className="w-full rounded-xl border border-border bg-surface pl-10 pr-4 py-2 text-sm text-gray-200 outline-none focus:border-accent"
-                />
-              </div>
+              <input
+                type="password"
+                required
+                value={regPassword}
+                onChange={(e) => setRegPassword(e.target.value)}
+                placeholder="At least 6 characters"
+                className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 outline-none transition focus:border-zinc-500"
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="mb-1 block text-xs font-semibold text-gray-300">
+                <label className="mb-1 block text-xs font-medium text-zinc-300">
                   Full Name
                 </label>
                 <input
                   type="text"
                   value={regFullName}
                   onChange={(e) => setRegFullName(e.target.value)}
-                  placeholder="Alex Rivers"
-                  disabled={loading}
-                  className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-gray-200 outline-none focus:border-accent"
+                  placeholder="Alex Rivera"
+                  className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 outline-none transition focus:border-zinc-500"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-xs font-semibold text-gray-300">
+                <label className="mb-1 block text-xs font-medium text-zinc-300">
                   GitHub Handle
                 </label>
                 <input
                   type="text"
                   value={regGithub}
                   onChange={(e) => setRegGithub(e.target.value)}
-                  placeholder="octocat"
-                  disabled={loading}
-                  className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-gray-200 outline-none focus:border-accent"
+                  placeholder="alexr"
+                  className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 outline-none transition focus:border-zinc-500"
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              disabled={loading || !regUsername || !regPassword}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-flame-red via-flame-orange to-flame-gold py-2.5 text-sm font-extrabold text-black shadow-flame-glow-sm transition hover:scale-[1.01] hover:shadow-flame-glow disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={loading}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-100 py-2 text-xs font-semibold text-zinc-950 transition hover:bg-white disabled:opacity-40"
             >
-              {loading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>Creating Account...</span>
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-4 w-4" />
-                  <span>Create Account</span>
-                </>
-              )}
+              {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Create Account"}
             </button>
           </form>
         )}

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Code, Flame, Sparkles, Loader2, Play } from "lucide-react";
+import { Loader2, Play } from "lucide-react";
 import { roastSnippet, ApiError, type RoastResponse } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 
@@ -12,19 +12,19 @@ interface SnippetFormProps {
 
 const PRESETS = [
   {
-    name: "eval() & 'any' Disaster",
+    name: "eval() Security Risk",
     lang: "TypeScript",
     title: "auth_validator.ts",
-    code: `// Extremely production ready security\nfunction checkAccess(user: any, token: any) {\n  var secret = "supersecret123";\n  if (user.role == "admin" || token.includes("boss")) {\n    return true;\n  }\n  return eval("token.isValid") == true;\n}`,
+    code: `function checkAccess(user: any, token: any) {\n  var secret = "supersecret123";\n  if (user.role == "admin" || token.includes("boss")) {\n    return true;\n  }\n  return eval("token.isValid") == true;\n}`,
   },
   {
-    name: "O(n³) Nested Loop Hell",
+    name: "O(n³) Nested Loop",
     lang: "Python",
     title: "matrix_optimizer.py",
     code: `def compute_similarity(matrix):\n    res = []\n    for i in range(len(matrix)):\n        for j in range(len(matrix)):\n            for k in range(len(matrix)):\n                if matrix[i][j] == matrix[j][k]:\n                    res.append(matrix[i][j] * 2)\n    return res`,
   },
   {
-    name: "Callback Pyramid of Doom",
+    name: "Callback Pyramid",
     lang: "JavaScript",
     title: "fetch_user_orders.js",
     code: `getUser(id, function(user) {\n  getProfile(user, function(profile) {\n    getOrders(profile, function(orders) {\n      getInvoice(orders[0], function(invoice) {\n        sendEmail(invoice, function(res) {\n          console.log("Email sent maybe? " + res);\n        });\n      });\n    });\n  });\n});`,
@@ -54,10 +54,10 @@ export default function SnippetForm({ tone, onResult }: SnippetFormProps) {
   const [phaseIndex, setPhaseIndex] = useState(0);
 
   const PHASES = [
-    "Compiling AST syntax tree...",
-    "Scanning for 17 unhandled code crimes...",
-    "Channeling Senior Architect disappointment...",
-    "Drafting architectural blueprint...",
+    "Parsing AST syntax...",
+    "Scanning anti-patterns & complexity...",
+    "Analyzing architectural debt...",
+    "Drafting senior blueprint...",
   ];
 
   async function handleSubmit(e: React.FormEvent) {
@@ -86,7 +86,7 @@ export default function SnippetForm({ tone, onResult }: SnippetFormProps) {
       setError(
         err instanceof ApiError
           ? err.message
-          : "Failed to roast snippet. Please check your network."
+          : "Failed to audit snippet. Please check your network."
       );
     } finally {
       clearInterval(interval);
@@ -102,22 +102,22 @@ export default function SnippetForm({ tone, onResult }: SnippetFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl space-y-4">
+    <form onSubmit={handleSubmit} className="w-full max-w-xl space-y-4">
       {/* Preset Pills */}
       <div>
-        <div className="mb-2 flex items-center justify-between text-xs text-gray-400">
-          <span className="font-semibold uppercase tracking-wider">Quick Code Disasters:</span>
-          <span>Click to test instantly</span>
+        <div className="mb-2 flex items-center justify-between text-[11px] text-zinc-400">
+          <span className="font-medium uppercase tracking-wider text-zinc-500">Quick Test Snippets</span>
+          <span>Click to load</span>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {PRESETS.map((p, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => loadPreset(p)}
-              className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-gray-300 transition hover:border-flame-orange hover:bg-surface-raised hover:text-white"
+              className="flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs text-zinc-400 transition hover:border-zinc-700 hover:text-zinc-200"
             >
-              <Play className="h-3 w-3 text-flame-orange" />
+              <Play className="h-3 w-3 text-zinc-500" />
               <span>{p.name}</span>
             </button>
           ))}
@@ -125,30 +125,30 @@ export default function SnippetForm({ tone, onResult }: SnippetFormProps) {
       </div>
 
       {/* Snippet details bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div>
-          <label className="mb-1 block text-xs font-semibold text-gray-300">
-            Snippet Name / Context (Optional)
+          <label className="mb-1 block text-xs font-medium text-zinc-300">
+            Filename / Context (Optional)
           </label>
           <input
             type="text"
-            placeholder="e.g. userAuthService.ts or binarySearch"
+            placeholder="e.g. auth_service.ts"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             disabled={loading}
-            className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-gray-200 placeholder-gray-500 outline-none focus:border-accent"
+            className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-100 placeholder-zinc-500 outline-none transition focus:border-zinc-500"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-xs font-semibold text-gray-300">
+          <label className="mb-1 block text-xs font-medium text-zinc-300">
             Language
           </label>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
             disabled={loading}
-            className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-gray-200 outline-none focus:border-accent"
+            className="w-full rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-zinc-200 outline-none transition focus:border-zinc-500"
           >
             {LANGUAGES.map((l) => (
               <option key={l} value={l} className="bg-surface-raised">
@@ -160,60 +160,45 @@ export default function SnippetForm({ tone, onResult }: SnippetFormProps) {
       </div>
 
       {/* Code Textarea */}
-      <div className="relative">
-        <div className="flex items-center justify-between rounded-t-xl border border-b-0 border-border bg-surface-raised px-4 py-2 text-xs font-mono text-gray-400">
-          <div className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
-            <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/80" />
-            <span className="h-2.5 w-2.5 rounded-full bg-green-500/80" />
-            <span className="ml-2 font-semibold text-gray-300">
-              {title || "snippet.txt"}
-            </span>
-          </div>
-          <span>{code.split("\n").length} lines</span>
-        </div>
-
+      <div>
+        <label className="mb-1 block text-xs font-medium text-zinc-300">
+          Code Snippet
+        </label>
         <textarea
-          rows={10}
+          rows={7}
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          placeholder={`// Paste your code snippet here...\nfunction calculateTotal(items) {\n  var total = 0;\n  for(var i=0; i<items.length; i++) {\n    total += eval(items[i].price);\n  }\n  return total;\n}`}
+          placeholder="Paste raw code here..."
           disabled={loading}
-          className="w-full rounded-b-xl border border-border bg-black/60 p-4 font-mono-code text-sm text-gray-200 placeholder-gray-600 outline-none focus:border-accent"
+          className="w-full rounded-lg border border-border bg-surface p-3 text-xs font-mono-code text-zinc-200 placeholder-zinc-500 outline-none transition focus:border-zinc-500"
         />
       </div>
 
-      {/* Error alert */}
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-400">
+        <div className="rounded-lg border border-red-900/50 bg-red-950/20 p-2.5 text-xs text-red-400">
           {error}
         </div>
       )}
 
-      {/* Roasting phase banner */}
       {loading && (
-        <div className="flex items-center justify-center gap-2.5 rounded-xl border border-flame-orange/30 bg-flame-orange/5 p-3 text-xs font-mono text-flame-orange">
-          <Loader2 className="h-4 w-4 animate-spin" />
+        <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface p-2.5 text-xs text-zinc-400">
+          <Loader2 className="h-3.5 w-3.5 animate-spin text-accent" />
           <span>{PHASES[phaseIndex]}</span>
         </div>
       )}
 
-      {/* Submit button */}
       <button
         type="submit"
         disabled={loading || !code.trim()}
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-flame-red via-flame-orange to-flame-gold py-3 text-base font-extrabold text-black shadow-flame-glow-sm transition hover:scale-[1.01] hover:shadow-flame-glow disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-100 py-2 text-xs font-semibold text-zinc-950 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
       >
         {loading ? (
           <>
-            <Loader2 className="h-5 w-5 animate-spin" />
-            <span>Roasting Snippet...</span>
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            <span>Auditing Snippet...</span>
           </>
         ) : (
-          <>
-            <Flame className="h-5 w-5" />
-            <span>Roast This Snippet</span>
-          </>
+          <span>Audit Code Snippet</span>
         )}
       </button>
     </form>

@@ -6,9 +6,9 @@ import UserHistoryModal from "@/components/UserHistoryModal";
 import SettingsModal from "@/components/SettingsModal";
 
 export const metadata: Metadata = {
-  title: "RoastMyCode — AI Code Auditor & Sarcastic Critic",
+  title: "RoastMyCode — AI Code Critic & Architecture Reviewer",
   description:
-    "Brutally honest, weirdly helpful feedback on your GitHub repos, raw code snippets, and tech resumes — paired with senior architect blueprints.",
+    "Honest, high-signal feedback on GitHub repositories, code snippets, and technical resumes with actionable senior architecture blueprints.",
   icons: {
     icon: "/favicon.ico",
   },
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark">
-      <body className="bg-background text-gray-100 min-h-screen selection:bg-flame-orange/30 selection:text-white">
+      <body className="bg-background text-zinc-200 min-h-screen antialiased">
         <AuthProvider>
           {children}
           <AuthModal />

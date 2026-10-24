@@ -97,6 +97,12 @@ Traditional code review and career preparation face critical human and tooling b
 - Public showcase of the most brutally roasted repositories and snippets.
 - Global statistics: Total roasts generated, average quality scores, and most roasted languages.
 
+### 6. Minimalist & Elegant Engineering UI
+- **Refined Dark Palette**: Purpose-built Zinc & Slate theme (`#09090b` base) designed for developer focus without eye strain or visual noise.
+- **Hairline Borders & Subtle Shadows**: Tactile micro-borders (`border-white/5`, `border-zinc-800`) replacing loud neon glow filters.
+- **Segmented Studio Controls**: Clean pill navigation across GitHub repos, raw snippets, and PDF uploads.
+- **Precision Gauges & Checklists**: Fine-stroke circular metrics (5px SVG track) and interactive senior architect blueprint checklists.
+
 ---
 
 ## 🏛 System Architecture & Data Flow
@@ -319,7 +325,7 @@ curl -X POST "http://localhost:8000/api/v1/roast/snippet" \
 |---|---|---|
 | **Frontend Framework** | **Next.js 14 (App Router)** | Server-side rendering, React Server Components, fast hydration, and route handling. |
 | **Language** | **TypeScript 5.0+** | Strict compile-time type safety preventing runtime state bugs across components. |
-| **Styling** | **Tailwind CSS + Glassmorphism** | Custom dark cyberpunk/flame design system, zero CSS bloat, responsive utility tokens. |
+| **Styling** | **Tailwind CSS + Minimalist UI System** | Refined, elegant dark theme (Zinc/Slate palette), subtle hairline borders, calm typography, and zero-bloat responsive utilities. |
 | **Icons & UI** | **Lucide React + Canvas Confetti** | Lightweight SVG iconography and celebratory micro-interactions for high scores. |
 | **Backend Framework**| **FastAPI (Python 3.10+)** | High-performance asynchronous ASGI framework, automatic OpenAPI documentation, and native Pydantic validation. |
 | **Inference Engine** | **Groq Cloud LPU SDK** | Hardware-accelerated inference providing sub-second JSON responses without cold starts. |
@@ -497,15 +503,16 @@ Roast-My-Code/
 │   ├── src/
 │   │   ├── app/                   # Next.js 14 App Router pages and layout
 │   │   ├── components/            # Reusable modular UI components
-│   │   │   ├── Navbar.tsx         # Responsive navigation & auth triggers
-│   │   │   ├── Hero.tsx           # Cyberpunk landing hero banner
-│   │   │   ├── RoastStudio.tsx    # Multi-tab roasting workspace
+│   │   │   ├── Navbar.tsx         # Responsive minimalist navigation & auth triggers
+│   │   │   ├── Hero.tsx           # Minimalist editorial landing hero
+│   │   │   ├── RoastStudio.tsx    # Multi-tab studio workspace with segmented pills
 │   │   │   ├── SnippetForm.tsx    # Code editor & tone selector
 │   │   │   ├── RepoForm.tsx       # GitHub repo ingestion form
 │   │   │   ├── ResumeUpload.tsx   # PDF upload & drag-and-drop zone
-│   │   │   ├── RoastCard.tsx      # Roast result card with blueprint & copy
-│   │   │   ├── ScoreGauge.tsx     # Animated SVG radial score gauges
-│   │   │   ├── HallOfFlame.tsx    # Community roast leaderboard
+│   │   │   ├── RoastCard.tsx      # Roast result card with blueprint & copy actions
+│   │   │   ├── ScoreGauge.tsx     # Refined fine-stroke SVG circular score gauges
+│   │   │   ├── HallOfFlame.tsx    # Minimalist community audit showcase
+│   │   │   ├── IntegrationsSection.tsx # Architecture & developer API preview
 │   │   │   ├── AuthModal.tsx      # Sign in & registration modal
 │   │   │   └── SettingsModal.tsx  # User profile & BYOK key configuration
 │   │   ├── context/
@@ -513,9 +520,9 @@ Roast-My-Code/
 │   │   ├── lib/
 │   │   │   └── api.ts             # Axios/fetch API client wrapper
 │   │   └── styles/
-│   │       └── globals.css        # Tailwind directives, animations & glassmorphism
+│   │       └── globals.css        # Minimalist base styles, typography & clean scrollbars
 │   ├── package.json               # Frontend dependencies & scripts
-│   ├── tailwind.config.js         # Theme extensions, glow shadows, cyber colors
+│   ├── tailwind.config.js         # Refined Zinc palette tokens & subtle shadows
 │   └── Dockerfile                 # Frontend container definition
 ├── docs/
 │   ├── architecture.md            # Deep-dive architectural documentation

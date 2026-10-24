@@ -2,14 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  Flame,
   Code,
   FileText,
-  Filter,
-  Eye,
   X,
-  TrendingDown,
-  Sparkles,
+  Loader2,
 } from "lucide-react";
 import GithubIcon from "./GithubIcon";
 import { getRecentRoasts, getRoast, RoastListItem, RoastResponse } from "@/lib/api";
@@ -51,38 +47,30 @@ export default function HallOfFlame() {
   }
 
   return (
-    <section id="hall-of-flame" className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 scroll-mt-20">
-      {/* Glow orb */}
-      <div className="pointer-events-none absolute -left-20 top-1/2 h-72 w-72 rounded-full bg-flame-red/10 blur-[100px]" />
-
-      <div className="mb-10 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-flame-red/30 bg-flame-red/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-flame-red mb-3">
-          <Flame className="h-3.5 w-3.5 animate-flame-flicker" />
-          <span>Public Exhibition</span>
-        </div>
-        <h2 className="text-3xl font-black text-white sm:text-5xl">
-          The Hall of <span className="gradient-text">Flame</span>
+    <section id="hall-of-flame" className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 scroll-mt-16">
+      <div className="mb-8 text-center">
+        <h2 className="text-xl sm:text-3xl font-semibold tracking-tight text-white">
+          Public Audits
         </h2>
-        <p className="mt-2 text-sm text-gray-400 max-w-2xl mx-auto">
-          Real repositories, code disasters, and resumes shredded in our public furnace.
-          Click any card to inspect the full senior blueprint and scores.
+        <p className="mt-1.5 text-xs text-zinc-400 max-w-lg mx-auto">
+          Explore recent community evaluations. Click any card to inspect the full review and architectural blueprint.
         </p>
 
         {/* Filter buttons */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-1.5">
           {[
-            { id: "all", label: "All Roasts" },
-            { id: "repo", label: "GitHub Repos" },
-            { id: "snippet", label: "Code Snippets" },
+            { id: "all", label: "All Audits" },
+            { id: "repo", label: "Repositories" },
+            { id: "snippet", label: "Snippets" },
             { id: "resume", label: "Resumes" },
           ].map((f) => (
             <button
               key={f.id}
               onClick={() => setFilter(f.id)}
-              className={`rounded-xl px-4 py-2 text-xs font-bold transition ${
+              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
                 filter === f.id
-                  ? "bg-flame-orange text-black shadow-flame-glow-sm"
-                  : "border border-border bg-surface text-gray-400 hover:text-white hover:border-border-glow"
+                  ? "bg-zinc-800 text-white shadow-sm"
+                  : "border border-border bg-surface text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
               }`}
             >
               {f.label}
@@ -93,20 +81,18 @@ export default function HallOfFlame() {
 
       {/* Grid of Cards */}
       {loading ? (
-        <div className="flex justify-center py-16">
-          <div className="flex items-center gap-2 text-sm font-mono text-gray-400">
-            <Flame className="h-5 w-5 animate-spin text-flame-orange" />
-            <span>Summoning recent victims...</span>
+        <div className="flex justify-center py-12">
+          <div className="flex items-center gap-2 text-xs text-zinc-500">
+            <Loader2 className="h-4 w-4 animate-spin text-zinc-400" />
+            <span>Loading recent audits...</span>
           </div>
         </div>
       ) : roasts.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-border p-12 text-center text-gray-400">
-          <Flame className="h-8 w-8 mx-auto text-gray-600 mb-2" />
-          <p className="text-sm font-semibold">No roasts found in this category yet.</p>
-          <p className="text-xs text-gray-500 mt-1">Be the first to submit a roast!</p>
+        <div className="rounded-xl border border-dashed border-border p-10 text-center text-zinc-500">
+          <p className="text-xs font-medium">No audits found in this category yet.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {roasts.map((r) => {
             const isRepo = r.target_type === "repo";
             const isSnippet = r.target_type === "snippet";
@@ -116,30 +102,30 @@ export default function HallOfFlame() {
               <div
                 key={r.id}
                 onClick={() => handleInspect(r.id)}
-                className="group relative cursor-pointer flex flex-col justify-between rounded-2xl border border-border bg-surface-raised/80 p-5 shadow-card-glow transition duration-200 hover:-translate-y-1 hover:border-flame-orange/60 hover:bg-surface-raised"
+                className="group relative cursor-pointer flex flex-col justify-between rounded-xl border border-border bg-surface-raised/40 p-4 transition-all duration-200 hover:border-zinc-700 hover:bg-surface-raised"
               >
                 <div>
                   {/* Top Bar */}
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center justify-between mb-2.5">
                     <div className="flex items-center gap-2">
-                      <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-surface border border-border text-flame-orange">
-                        {isRepo && <GithubIcon className="h-3.5 w-3.5" />}
-                        {isSnippet && <Code className="h-3.5 w-3.5" />}
-                        {isResume && <FileText className="h-3.5 w-3.5" />}
+                      <span className="flex h-6 w-6 items-center justify-center rounded border border-border bg-surface text-zinc-400">
+                        {isRepo && <GithubIcon className="h-3 w-3" />}
+                        {isSnippet && <Code className="h-3 w-3" />}
+                        {isResume && <FileText className="h-3 w-3" />}
                       </span>
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                      <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-500">
                         {r.target_type}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 rounded-full bg-black/40 px-2.5 py-0.5 text-xs font-black border border-border">
-                      <span className="text-gray-400 text-[10px]">Score:</span>
+                    <div className="flex items-center gap-1 rounded bg-surface px-2 py-0.5 text-xs font-medium border border-border">
+                      <span className="text-zinc-500 text-[10px]">Score</span>
                       <span
                         className={
-                          r.code_quality_score < 40
+                          r.code_quality_score < 45
                             ? "text-red-400"
-                            : r.code_quality_score < 70
-                            ? "text-yellow-400"
+                            : r.code_quality_score < 75
+                            ? "text-amber-400"
                             : "text-emerald-400"
                         }
                       >
@@ -149,25 +135,19 @@ export default function HallOfFlame() {
                   </div>
 
                   {/* Target title */}
-                  <h3 className="font-bold text-white text-base truncate mb-2 group-hover:text-flame-orange transition">
+                  <h3 className="font-medium text-zinc-100 text-xs truncate mb-2 group-hover:text-white transition-colors">
                     {r.target_url_or_name}
                   </h3>
 
-                  {/* Sarcastic quote snippet */}
-                  <p className="text-xs text-gray-300 italic line-clamp-3 leading-relaxed border-l-2 border-flame-red/60 pl-2.5 bg-black/20 py-1.5 rounded-r">
+                  {/* Quote preview */}
+                  <p className="text-xs text-zinc-400 italic line-clamp-3 leading-relaxed border-l border-zinc-700 pl-2">
                     &ldquo;{r.roast_preview}&rdquo;
                   </p>
                 </div>
 
-                {/* Footer metadata */}
-                <div className="mt-4 pt-3 border-t border-border/60 flex items-center justify-between text-[11px] text-gray-500">
-                  <span>
-                    by {r.author_username ? `@${r.author_username}` : "Anonymous dev"}
-                  </span>
-                  <span className="flex items-center gap-1 text-accent font-semibold group-hover:underline">
-                    <Eye className="h-3 w-3" />
-                    <span>View Blueprint</span>
-                  </span>
+                <div className="mt-3 pt-2 border-t border-border/60 flex items-center justify-between text-[10px] text-zinc-500">
+                  <span>Click to view details</span>
+                  <span className="text-zinc-400 font-medium group-hover:translate-x-0.5 transition-transform">→</span>
                 </div>
               </div>
             );
@@ -175,17 +155,26 @@ export default function HallOfFlame() {
         </div>
       )}
 
-      {/* Inspect Modal */}
+      {/* Detail Modal */}
       {activeRoast && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="relative max-h-[90vh] overflow-y-auto w-full max-w-2xl">
             <button
               onClick={() => setActiveRoast(null)}
-              className="absolute top-4 right-4 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-surface-card border border-border text-gray-300 hover:text-white"
+              className="absolute top-4 right-4 z-10 flex h-7 w-7 items-center justify-center rounded-lg bg-surface border border-border text-zinc-400 hover:text-white transition-colors"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3.5 w-3.5" />
             </button>
             <RoastCard roast={activeRoast} onReset={() => setActiveRoast(null)} />
+          </div>
+        </div>
+      )}
+
+      {loadingDetails && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="flex items-center gap-2 rounded-lg border border-border bg-surface-raised p-4 text-xs text-zinc-300">
+            <Loader2 className="h-4 w-4 animate-spin text-accent" />
+            <span>Loading audit details...</span>
           </div>
         </div>
       )}

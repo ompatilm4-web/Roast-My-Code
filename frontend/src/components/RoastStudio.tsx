@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Code, FileText, Flame, Sparkles, UserCheck } from "lucide-react";
+import { Code, FileText, UserCheck } from "lucide-react";
 import GithubIcon from "./GithubIcon";
 import RepoForm from "./RepoForm";
 import SnippetForm from "./SnippetForm";
@@ -13,10 +13,10 @@ import { useAuth } from "@/context/AuthContext";
 type Tab = "github" | "snippet" | "resume";
 
 const TONES = [
-  { id: "senior_dev", label: "🔥 Senior Tech Lead", desc: "Brutal, architectural, cynical" },
-  { id: "gordon_ramsay", label: "🍳 Gordon Ramsay", desc: "Pure culinary-grade anger" },
-  { id: "passive_aggressive", label: "🙃 Passive-Aggressive", desc: "'Per my previous review...'" },
-  { id: "recruiter", label: "👔 Ruthless Recruiter", desc: "Resume & ATS shredder" },
+  { id: "senior_dev", label: "Senior Tech Lead", desc: "Rigorous, architectural, direct" },
+  { id: "gordon_ramsay", label: "Gordon Ramsay", desc: "Unforgiving culinary rage" },
+  { id: "passive_aggressive", label: "Passive-Aggressive", desc: "'As per my previous review...'" },
+  { id: "recruiter", label: "Tech Recruiter", desc: "ATS scanner & impact filter" },
 ];
 
 export default function RoastStudio() {
@@ -34,68 +34,65 @@ export default function RoastStudio() {
   }
 
   return (
-    <section id="roast-studio" className="relative w-full max-w-4xl mx-auto px-4 py-12 scroll-mt-20">
-      {/* Container Card */}
-      <div className="rounded-3xl border border-border bg-surface-raised/90 p-6 sm:p-10 shadow-2xl backdrop-blur-xl">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 rounded-full border border-flame-orange/30 bg-flame-orange/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-flame-orange mb-3">
-            <Flame className="h-3.5 w-3.5 animate-flame-flicker" />
-            <span>Interactive Roast Engine</span>
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-white">
-            Choose Your <span className="gradient-text">Sacrifice</span>
+    <section id="roast-studio" className="relative w-full max-w-3xl mx-auto px-4 py-8 scroll-mt-16">
+      {/* Studio Container Card */}
+      <div className="rounded-2xl border border-border bg-surface-raised/60 p-5 sm:p-8 backdrop-blur-md">
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-white">
+            Audit Studio
           </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            Audit a full GitHub repo, paste a quick code snippet, or shred your resume PDF.
+          <p className="mt-1 text-xs text-zinc-400">
+            Submit a GitHub repository, raw snippet, or technical resume for comprehensive review.
           </p>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex rounded-2xl border border-border bg-surface p-1.5 shadow-inner">
+        <div className="flex justify-center mb-6">
+          <div className="inline-flex rounded-lg border border-border bg-surface p-1">
             <button
               onClick={() => setTab("github")}
-              className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition ${
+              className={`flex items-center gap-2 rounded-md px-3.5 py-1.5 text-xs font-medium transition ${
                 tab === "github"
-                  ? "bg-gradient-to-r from-flame-red to-flame-orange text-black shadow-flame-glow-sm"
-                  : "text-gray-400 hover:text-white"
+                  ? "bg-zinc-800 text-white shadow-sm"
+                  : "text-zinc-400 hover:text-zinc-200"
               }`}
             >
-              <GithubIcon className="h-4 w-4" />
+              <GithubIcon className="h-3.5 w-3.5" />
               <span>GitHub Repo</span>
             </button>
 
             <button
               onClick={() => setTab("snippet")}
-              className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition ${
+              className={`flex items-center gap-2 rounded-md px-3.5 py-1.5 text-xs font-medium transition ${
                 tab === "snippet"
-                  ? "bg-gradient-to-r from-flame-red to-flame-orange text-black shadow-flame-glow-sm"
-                  : "text-gray-400 hover:text-white"
+                  ? "bg-zinc-800 text-white shadow-sm"
+                  : "text-zinc-400 hover:text-zinc-200"
               }`}
             >
-              <Code className="h-4 w-4" />
+              <Code className="h-3.5 w-3.5" />
               <span>Code Snippet</span>
             </button>
 
             <button
               onClick={() => setTab("resume")}
-              className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition ${
+              className={`flex items-center gap-2 rounded-md px-3.5 py-1.5 text-xs font-medium transition ${
                 tab === "resume"
-                  ? "bg-gradient-to-r from-flame-red to-flame-orange text-black shadow-flame-glow-sm"
-                  : "text-gray-400 hover:text-white"
+                  ? "bg-zinc-800 text-white shadow-sm"
+                  : "text-zinc-400 hover:text-zinc-200"
               }`}
             >
-              <FileText className="h-4 w-4" />
+              <FileText className="h-3.5 w-3.5" />
               <span>Resume PDF</span>
             </button>
           </div>
         </div>
 
         {/* Persona / Tone Selector */}
-        <div className="mb-8">
-          <div className="mb-2 flex items-center justify-between text-xs text-gray-400">
-            <span className="font-semibold uppercase tracking-wider">Select Roast Personality:</span>
-            <span>Choose how brutally you want to be treated</span>
+        <div className="mb-6">
+          <div className="mb-2 flex items-center justify-between text-[11px] text-zinc-400">
+            <span className="font-medium uppercase tracking-wider text-zinc-500">Review Persona</span>
+            <span>Tone of critique</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {TONES.map((t) => (
@@ -103,14 +100,14 @@ export default function RoastStudio() {
                 key={t.id}
                 type="button"
                 onClick={() => setTone(t.id)}
-                className={`rounded-xl border p-2.5 text-left transition ${
+                className={`rounded-lg border p-2 text-left transition ${
                   tone === t.id
-                    ? "border-flame-orange bg-flame-orange/10 text-white shadow-flame-glow-sm"
-                    : "border-border bg-surface text-gray-400 hover:border-border-glow hover:text-gray-200"
+                    ? "border-accent/60 bg-accent/10 text-white"
+                    : "border-border bg-surface/80 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
                 }`}
               >
-                <div className="text-xs font-bold truncate">{t.label}</div>
-                <div className="text-[10px] text-gray-500 truncate mt-0.5">{t.desc}</div>
+                <div className="text-xs font-medium truncate">{t.label}</div>
+                <div className="text-[10px] text-zinc-500 truncate mt-0.5">{t.desc}</div>
               </button>
             ))}
           </div>
@@ -124,34 +121,34 @@ export default function RoastStudio() {
         </div>
 
         {/* User status note */}
-        <div className="mt-8 border-t border-border/60 pt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-400">
+        <div className="mt-6 border-t border-border pt-4 flex flex-wrap items-center justify-between gap-2 text-[11px] text-zinc-500">
           {user ? (
-            <div className="flex items-center gap-1.5 text-cyber-emerald">
-              <UserCheck className="h-4 w-4" />
+            <div className="flex items-center gap-1.5 text-emerald-400">
+              <UserCheck className="h-3.5 w-3.5" />
               <span>
-                Signed in as <strong>@{user.username}</strong> — roasts are saved to your personal history.
+                Signed in as <strong className="text-zinc-200">@{user.username}</strong>. Audits saved automatically.
               </span>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
-              <span>Roasting in Guest Mode.</span>
+            <div className="flex items-center gap-1.5">
+              <span>Guest mode.</span>
               <button
                 onClick={() => openAuthModal("register")}
-                className="text-flame-orange font-bold hover:underline"
+                className="text-zinc-300 underline underline-offset-2 hover:text-white"
               >
-                Create free account to save your history →
+                Create account to save history
               </button>
             </div>
           )}
-          <span className="font-mono text-[11px] text-gray-500">
-            Latency &lt; 900ms via Groq LPU
+          <span className="font-mono text-zinc-500">
+            Latency &lt; 900ms
           </span>
         </div>
       </div>
 
       {/* Roast Output Section */}
       {roast && (
-        <div ref={resultRef} className="mt-12 flex justify-center scroll-mt-24">
+        <div ref={resultRef} className="mt-8 flex justify-center scroll-mt-20">
           <RoastCard roast={roast} onReset={() => setRoast(null)} />
         </div>
       )}

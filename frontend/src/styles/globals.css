@@ -9,60 +9,75 @@
   }
 
   body {
-    background-color: #080b11;
-    color: #e2e8f0;
+    background-color: #09090b;
+    color: #e4e4e7;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Custom Sleek Scrollbar */
+  ::selection {
+    background-color: rgba(245, 158, 11, 0.25);
+    color: #ffffff;
+  }
+
+  /* Sleek, minimal scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #080b11;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #242e47;
-    border-radius: 4px;
+    background: #27272a;
+    border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #f97316;
+    background: #3f3f46;
   }
 }
 
-/* Glassmorphism and glow utilities */
+/* Minimalist card & glass utilities */
 .glass-panel {
-  background: rgba(14, 19, 31, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(18, 18, 21, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-panel-elevated {
-  background: rgba(21, 28, 46, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(249, 115, 22, 0.2);
+  background: rgba(24, 24, 27, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Subtle, tasteful gradient highlight */
 .gradient-text {
-  background: linear-gradient(135deg, #ff5722 0%, #f97316 40%, #fbbf24 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #d4d4d8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.gradient-text-cyan {
-  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+.gradient-text-warm {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #ea580c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Code area font */
+.gradient-text-subtle {
+  background: linear-gradient(180deg, #f4f4f5 20%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Minimal code font */
 .font-mono-code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-feature-settings: "liga" 0;
 }
