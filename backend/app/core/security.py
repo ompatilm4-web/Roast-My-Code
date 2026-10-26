@@ -1,10 +1,4 @@
-"""
-Security layer:
-- Password hashing & verification (PBKDF2-HMAC-SHA256)
-- JWT token generation & verification
-- FastAPI dependencies for current user (required & optional)
-- Rate limiting via slowapi
-"""
+
 import hashlib
 import hmac
 import secrets

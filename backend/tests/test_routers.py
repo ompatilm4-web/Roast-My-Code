@@ -1,8 +1,4 @@
-"""
-End-to-end router tests using FastAPI's TestClient against an isolated
-SQLite test DB (see conftest.py). External calls (GitHub, Groq) are mocked
-so these run fast and offline.
-"""
+
 import json
 from unittest.mock import patch
 

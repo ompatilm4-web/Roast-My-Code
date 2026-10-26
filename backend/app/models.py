@@ -1,7 +1,4 @@
-"""
-ORM models: User + Roast.
-UUIDs are stored as strings for cross-database compatibility (SQLite + Postgres).
-"""
+
 import uuid
 from datetime import datetime
 

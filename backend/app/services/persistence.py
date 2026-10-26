@@ -1,6 +1,4 @@
-"""
-Helper for user resolution and saving/serializing roasts.
-"""
+
 from typing import Optional
 from sqlalchemy.orm import Session
 

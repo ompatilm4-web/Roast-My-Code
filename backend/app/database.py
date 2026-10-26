@@ -1,8 +1,4 @@
-"""
-SQLAlchemy engine + session setup and initial database seed.
-Works out of the box with SQLite for local dev and Postgres in production
-just by changing DATABASE_URL.
-"""
+
 from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
@@ -13,7 +9,13 @@ settings = get_settings()
 
 connect_args = {"check_same_thread": False} if settings.DATABASE_URL.startswith("sqlite") else {}
 
-engine = create_engine(settings.DATABASE_URL, connect_args=connect_args, pool_pre_ping=True)
+db_url = settings.DATABASE_URL
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql+psycopg2://", 1)
+elif db_url.startswith("postgresql://"):
+    db_url = db_url.replace("postgresql://", "postgresql+psycopg2://", 1)
+
+engine = create_engine(db_url, connect_args=connect_args, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
@@ -127,15 +129,15 @@ def seed_demo_data(db) -> None:
 
 
 def init_db() -> None:
-    """Create tables if they don't exist and seed initial demo data."""
+    """Create tables; seed demo data only in development."""
     from app import models  # noqa: F401
     Base.metadata.create_all(bind=engine)
-    db = SessionLocal()
-    try:
-        seed_demo_data(db)
-    finally:
-        db.close()
-
+    if settings.ENV == "development":
+        db = SessionLocal()
+        try:
+            seed_demo_data(db)
+        finally:
+            db.close()
 
 def get_db():
     db = SessionLocal()

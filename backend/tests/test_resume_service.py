@@ -1,6 +1,4 @@
-"""
-Tests for resume PDF text extraction.
-"""
+
 import io
 
 import pytest

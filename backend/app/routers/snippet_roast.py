@@ -1,7 +1,4 @@
-"""
-Direct Code Snippet roasting router.
-Allows developers to paste raw code snippets and receive immediate, witty feedback + blueprint.
-"""
+
 from typing import Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session

@@ -1,8 +1,3 @@
-"""
-Prompt templates. Kept out of llm_service.py so they're easy to tune
-without touching application logic.
-"""
-
 JSON_SCHEMA_INSTRUCTIONS = """
 Respond ONLY with valid JSON. No markdown, no code fences, no preamble.
 Match this exact schema:

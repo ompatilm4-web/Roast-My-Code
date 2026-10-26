@@ -1,8 +1,4 @@
-"""
-Fetches everything we need about a repo from the GitHub REST API:
-metadata, README, language breakdown, top-level file tree, and recent
-commit messages. Returns a plain dict that gets fed into the LLM prompt.
-"""
+
 import re
 import base64
 from urllib.parse import urlparse

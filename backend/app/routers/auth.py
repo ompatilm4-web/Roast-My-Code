@@ -1,6 +1,4 @@
-"""
-Authentication router: Registration, Login, Profile retrieval, and User's Roasts.
-"""
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 

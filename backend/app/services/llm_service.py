@@ -1,9 +1,4 @@
-"""
-Wraps the Groq client: sends the system prompt + context, enforces JSON
-mode, and validates the response against our Pydantic schema. Retries
-once if the model returns malformed JSON.
-Falls back gracefully to intelligent heuristic engine if Groq is unconfigured or returns an error.
-"""
+
 import json
 import logging
 from typing import Optional

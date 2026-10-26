@@ -1,8 +1,4 @@
-"""
-Pydantic schemas — the API's public contract.
-Kept separate from the ORM models on purpose (proper layering: DB shape
-can evolve independently of what clients see).
-"""
+
 from datetime import datetime
 from typing import Optional, List
 from pydantic import BaseModel, Field, field_validator

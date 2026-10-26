@@ -1,8 +1,4 @@
-"""
-Centralized app configuration.
-All values are pulled from environment variables / .env so nothing
-sensitive is hardcoded.
-"""
+
 from functools import lru_cache
 from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict

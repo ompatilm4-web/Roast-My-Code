@@ -1,8 +1,4 @@
-"""
-Tests for the Groq wrapper: valid JSON on first try, retry-on-malformed-JSON,
-and the final failure path. Groq is fully mocked — no real API calls, no
-API key needed, runs offline in CI.
-"""
+
 import json
 from unittest.mock import patch, MagicMock
 

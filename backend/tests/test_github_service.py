@@ -1,7 +1,4 @@
-"""
-Tests for GitHub URL parsing (pure logic, no network) and repo context
-fetching (mocked HTTP — never hits the real GitHub API in CI).
-"""
+
 from unittest.mock import patch, MagicMock
 
 import pytest

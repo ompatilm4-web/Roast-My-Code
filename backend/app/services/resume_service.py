@@ -1,6 +1,4 @@
-"""
-Extracts plain text from an uploaded resume PDF.
-"""
+
 import io
 
 from fastapi import HTTPException, UploadFile

@@ -1,8 +1,4 @@
-"""
-Intelligent heuristic roast generator.
-Used as a resilient, instant fallback whenever Groq API is unavailable, unauthenticated,
-or rate-limited, guaranteeing that user requests NEVER crash with 502/500 errors.
-"""
+
 import random
 import re
 from app.schemas import RoastLLMOutput
