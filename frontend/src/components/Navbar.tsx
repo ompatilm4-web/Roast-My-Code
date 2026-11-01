@@ -4,15 +4,10 @@ import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import {
   Flame,
-  User,
   History,
   Settings,
   LogOut,
   ChevronDown,
-  Terminal,
-  Cpu,
-  Layers,
-  Sparkles,
 } from "lucide-react";
 
 export default function Navbar() {

@@ -3,10 +3,6 @@
 import React, { useEffect, useState } from "react";
 import {
   ArrowRight,
-  TrendingUp,
-  FileCode,
-  Layers,
-  Sparkles,
 } from "lucide-react";
 import GithubIcon from "./GithubIcon";
 import { getPlatformStats, PlatformStats } from "@/lib/api";
